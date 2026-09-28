@@ -1,0 +1,28 @@
+# Requirement checklist from the supplied brief
+
+- [x] Register a relief camp with capacity.
+- [x] Log incoming supplies with quantity.
+- [x] Register a family.
+- [x] Check a family into a camp with headcount.
+- [x] Distribute supplies to a family.
+- [x] View current inventory levels.
+- [x] View families currently housed.
+- [x] Distribution cannot exceed current camp inventory for that supply type.
+- [x] Family check-in cannot exceed remaining camp capacity.
+- [x] Rules enforced in the service layer before persistence.
+- [x] Spring Web.
+- [x] Spring Data JPA.
+- [x] Bean Validation.
+- [x] MySQL driver.
+- [x] Entity relationships: Camp, Supply, Family, Distribution.
+- [x] Repositories extending JpaRepository.
+- [x] Service classes containing business logic.
+- [x] GET/POST/PUT/DELETE controllers as appropriate.
+- [x] Meaningful HTTP status codes.
+- [x] Input validation.
+- [x] Global exception handler.
+- [x] Postman collection.
+- [x] Swagger UI.
+- [x] Console notification when status changes.
+- [x] Pagination and sorting for camp list.
+- [x] Responsive UI/UX for the core features.

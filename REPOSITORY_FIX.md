@@ -1,0 +1,1 @@
+Repository query methods were corrected to navigate the actual JPA relationship fields using underscore syntax (for example, countByCamp_Id), because Supply/Family/Distribution contain a Camp/Family/Supply object rather than a campId/familyId/supplyId field.

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f3d2e">
+  <title>ReliefTrack | Disaster Relief Camp Resource Tracker</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark"><span>⛺</span></div>
+      <div><strong>ReliefTrack</strong><small>Camp Resource Tracker</small></div>
+    </div>
+    <div class="org-chip"><span class="status-dot"></span><div><b>Relief Operations</b><small>Field coordination</small></div></div>
+    <nav class="nav" aria-label="Main navigation">
+      <button class="nav-item active" data-section="home"><span class="nav-icon">⌂</span><span>Home</span></button>
+      <button class="nav-item" data-section="dashboard"><span class="nav-icon">▦</span><span>Dashboard</span></button>
+      <div class="nav-label">OPERATIONS</div>
+      <button class="nav-item" data-section="camps"><span class="nav-icon">⌂</span><span>Relief Camps</span></button>
+      <button class="nav-item" data-section="inventory"><span class="nav-icon">▣</span><span>Inventory</span></button>
+      <button class="nav-item" data-section="families"><span class="nav-icon">♧</span><span>Families</span></button>
+      <button class="nav-item" data-section="distributions"><span class="nav-icon">⇄</span><span>Distributions</span></button>
+      <div class="nav-label">INSIGHTS</div>
+      <button class="nav-item" data-section="reports"><span class="nav-icon">▤</span><span>Reports</span></button>
+      <button class="nav-item" data-section="notifications"><span class="nav-icon">◉</span><span>Alerts</span><span class="nav-count" id="alertCount">0</span></button>
+    </nav>
+    <div class="sidebar-footer"><div class="mini-avatar">RT</div><div><b>Operations Desk</b><small>Administrator</small></div><button class="icon-only" onclick="go('settings')" title="Settings">⚙</button></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left"><button class="hamburger" id="menuBtn">☰</button><div><span class="breadcrumb">ReliefTrack / <b id="pageTitle">Home</b></span><h1 id="pageHeading">Good morning, Operations Team</h1></div></div>
+      <div class="top-actions"><div class="connection"><span class="status-dot"></span><span>Backend connected</span></div><button class="round-btn" onclick="refreshAll()" title="Refresh data">↻</button><button class="user-chip" onclick="go('settings')"><span>RT</span><b>Admin</b><i>⌄</i></button></div>
+    </header>
+
+    <div id="toast" class="toast"></div>
+
+    <!-- HOME -->
+    <section id="home" class="section active">
+      <div class="welcome-card">
+        <div class="welcome-copy"><span class="eyebrow-pill">DISASTER RELIEF OPERATIONS</span><h2>Coordinate relief with clarity.</h2><p>Manage camps, households, essential supplies and distributions from one field-ready workspace.</p><div class="welcome-actions"><button class="primary" onclick="go('dashboard')">Open dashboard <span>→</span></button><button class="secondary" onclick="openForm('campForm')">+ Register a camp</button></div></div>
+        <div class="welcome-art"><div class="sun"></div><div class="mountain m1"></div><div class="mountain m2"></div><div class="tent t1">⛺</div><div class="tent t2">⛺</div><div class="people">• • •</div></div>
+      </div>
+      <div class="home-grid">
+        <div class="panel today-panel"><div class="panel-title"><div><span class="eyebrow">TODAY</span><h3>Operations snapshot</h3></div><span class="date-chip" id="todayLabel">—</span></div><div class="metric-list"><div><span>Families currently sheltered</span><strong id="homeChecked">—</strong></div><div><span>Available inventory units</span><strong id="homeUnits">—</strong></div><div><span>Distributions today</span><strong id="homeDist">—</strong></div></div></div>
+        <div class="panel action-panel"><div class="panel-title"><div><span class="eyebrow">QUICK ACTIONS</span><h3>Start an operation</h3></div></div><div class="action-grid"><button onclick="openForm('campForm')"><span>⛺</span><b>New camp</b><small>Register location & capacity</small></button><button onclick="openForm('familyForm')"><span>👨‍👩‍👧</span><b>Register family</b><small>Add a household</small></button><button onclick="openForm('supplyForm')"><span>📦</span><b>Add supplies</b><small>Update inventory</small></button><button onclick="openForm('distributionForm')"><span>🚚</span><b>Distribute</b><small>Record a handover</small></button></div></div>
+      </div>
+      <div class="feature-strip"><div><span class="feature-icon green">✓</span><div><b>Capacity protection</b><small>Check-ins cannot exceed camp capacity.</small></div></div><div><span class="feature-icon blue">▣</span><div><b>Inventory control</b><small>Distribution cannot exceed available stock.</small></div></div><div><span class="feature-icon amber">↺</span><div><b>Traceable records</b><small>Every handover can be reversed and audited.</small></div></div></div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="section">
+      <div class="section-head"><div><span class="eyebrow-pill">LIVE OPERATIONS</span><h2>Relief dashboard</h2><p>One view of capacity, families, supplies and distributions.</p></div><button class="primary" onclick="refreshAll()">↻ Refresh data</button></div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon green">⛺</div><span>Relief camps</span><strong id="statCamps">—</strong><small><b id="statActive">—</b> active</small></div>
+        <div class="stat-card"><div class="stat-icon purple">♧</div><span>Registered families</span><strong id="statFamilies">—</strong><small><b id="statChecked">—</b> checked in</small></div>
+        <div class="stat-card"><div class="stat-icon blue">▣</div><span>Inventory units</span><strong id="statUnits">—</strong><small>Across all camps</small></div>
+        <div class="stat-card"><div class="stat-icon amber">⇄</div><span>Today's distributions</span><strong id="statDist">—</strong><small>Successful handovers</small></div>
+      </div>
+      <div class="dashboard-grid">
+        <div class="panel"><div class="panel-title"><div><span class="eyebrow">CAPACITY</span><h3>Camp occupancy</h3></div><button class="text-btn" onclick="go('camps')">View camps →</button></div><div id="capacityBars" class="capacity-list"></div></div>
+        <div class="panel"><div class="panel-title"><div><span class="eyebrow">INVENTORY</span><h3>Stock health</h3></div><button class="text-btn" onclick="go('inventory')">Manage stock →</button></div><div id="stockSummary" class="stock-list"></div></div>
+      </div>
+      <div class="panel recent-panel"><div class="panel-title"><div><span class="eyebrow">RECENT ACTIVITY</span><h3>Latest distributions</h3></div><button class="text-btn" onclick="go('distributions')">View all →</button></div><div class="table-wrap"><table><thead><tr><th>Time</th><th>Camp</th><th>Family</th><th>Supply</th><th>Qty</th></tr></thead><tbody id="recentRows"></tbody></table></div></div>
+    </section>
+
+    <!-- CAMPS -->
+    <section id="camps" class="section"><div class="section-head"><div><span class="eyebrow-pill">OPERATIONS</span><h2>Relief camps</h2><p>Register locations and monitor real-time shelter capacity.</p></div><button class="primary" onclick="openForm('campForm')">+ Add camp</button></div><div class="toolbar"><div class="search-box"><span>⌕</span><input id="campSearch" placeholder="Search camps or locations..." oninput="renderCamps()"></div><div class="toolbar-actions"><button class="secondary" onclick="openForm('campForm')">+ Register</button><button class="secondary" onclick="loadCamps()">↻</button></div></div><div class="panel"><div class="table-wrap"><table><thead><tr><th>Camp</th><th>Location</th><th>Capacity</th><th>Occupied</th><th>Available</th><th>Status</th><th>Actions</th></tr></thead><tbody id="campRows"></tbody></table></div><div class="pagination"><button onclick="campPage(-1)">←</button><span id="campPageLabel">Page 1</span><button onclick="campPage(1)">→</button></div></div></section>
+
+    <!-- INVENTORY -->
+    <section id="inventory" class="section"><div class="section-head"><div><span class="eyebrow-pill">RESOURCE MANAGEMENT</span><h2>Inventory</h2><p>Track food, water, blankets, medical and hygiene supplies.</p></div><button class="primary" onclick="openForm('supplyForm')">+ Add supply</button></div><div class="inventory-cards"><div class="mini-card"><span class="stat-icon blue">💧</span><div><small>Water stock</small><b id="waterStock">—</b></div></div><div class="mini-card"><span class="stat-icon amber">▤</span><div><small>Food stock</small><b id="foodStock">—</b></div></div><div class="mini-card"><span class="stat-icon purple">✚</span><div><small>Medical kits</small><b id="medicalStock">—</b></div></div><div class="mini-card"><span class="stat-icon green">▦</span><div><small>Other supplies</small><b id="otherStock">—</b></div></div></div><div class="toolbar"><div class="search-box"><span>⌕</span><input id="inventorySearch" placeholder="Search supply type or camp..." oninput="renderSupplies()"></div><select class="filter-select" id="inventoryCampFilter" onchange="loadSupplies()"><option value="">All camps</option></select><button class="secondary" onclick="openForm('supplyForm')">+ Add stock</button></div><div class="panel"><div class="table-wrap"><table><thead><tr><th>Supply</th><th>Camp</th><th>Quantity</th><th>Unit</th><th>Stock level</th><th>Actions</th></tr></thead><tbody id="supplyRows"></tbody></table></div></div></section>
+
+    <!-- FAMILIES -->
+    <section id="families" class="section"><div class="section-head"><div><span class="eyebrow-pill">HOUSEHOLD REGISTRY</span><h2>Families</h2><p>Register households and manage camp check-in and check-out.</p></div><button class="primary" onclick="openForm('familyForm')">+ Register family</button></div><div class="family-summary"><div class="mini-card"><span>Registered</span><b id="registeredFamilies">—</b></div><div class="mini-card"><span>Checked in</span><b id="checkedFamilies">—</b></div><div class="mini-card"><span>Checked out</span><b id="checkedOutFamilies">—</b></div><div class="mini-card"><span>Total people sheltered</span><b id="totalPeople">—</b></div></div><div class="toolbar"><div class="search-box"><span>⌕</span><input id="familySearch" placeholder="Search family head or contact..." oninput="renderFamilies()"></div><select class="filter-select" id="familyCampFilter" onchange="loadFamilies()"><option value="">All camps</option></select><select class="filter-select" id="familyStatusFilter" onchange="renderFamilies()"><option value="">All statuses</option><option value="REGISTERED">Registered</option><option value="CHECKED_IN">Checked in</option><option value="CHECKED_OUT">Checked out</option></select></div><div class="panel"><div class="table-wrap"><table><thead><tr><th>Family head</th><th>Members</th><th>Contact</th><th>Camp</th><th>Status</th><th>Actions</th></tr></thead><tbody id="familyRows"></tbody></table></div></div></section>
+
+    <!-- DISTRIBUTIONS -->
+    <section id="distributions" class="section"><div class="section-head"><div><span class="eyebrow-pill">SUPPLY HANDOVER</span><h2>Distributions</h2><p>Record each handover with automatic inventory reduction.</p></div><button class="primary" onclick="openForm('distributionForm')">+ New distribution</button></div><div class="distribution-banner"><div class="banner-icon">✓</div><div><b>Controlled distribution</b><span>The service layer checks family check-in and available inventory before saving.</span></div><span class="banner-rule">Inventory protected</span></div><div class="toolbar"><div class="search-box"><span>⌕</span><input id="distributionSearch" placeholder="Search camp, family or supply..." oninput="renderDistributions()"></div><button class="secondary" onclick="loadDistributions()">↻ Refresh</button></div><div class="panel"><div class="table-wrap"><table><thead><tr><th>Date & time</th><th>Camp</th><th>Family</th><th>Supply</th><th>Quantity</th><th>Action</th></tr></thead><tbody id="distributionRows"></tbody></table></div></div></section>
+
+    <!-- REPORTS -->
+    <section id="reports" class="section"><div class="section-head"><div><span class="eyebrow-pill">FIELD INSIGHTS</span><h2>Reports</h2><p>Quick operational summaries built from your live records.</p></div><button class="primary" onclick="window.print()">Print report</button></div><div class="report-grid"><div class="report-card large"><span class="eyebrow">CAMP CAPACITY</span><h3>Occupancy overview</h3><div id="reportCapacity"></div></div><div class="report-card"><span class="eyebrow">HOUSEHOLDS</span><h3>Family status</h3><div class="donut-wrap"><div class="donut" id="familyDonut"><span id="familyDonutTotal">0</span><small>families</small></div><div id="familyLegend" class="legend"></div></div></div><div class="report-card large"><span class="eyebrow">SUPPLY MIX</span><h3>Inventory by category</h3><div id="reportSupply"></div></div><div class="report-card"><span class="eyebrow">OPERATIONS</span><h3>Data quality</h3><div class="quality-list"><div><span>Camp records</span><b id="qualityCamps">—</b></div><div><span>Family records</span><b id="qualityFamilies">—</b></div><div><span>Inventory records</span><b id="qualitySupplies">—</b></div><div><span>Distribution records</span><b id="qualityDist">—</b></div></div></div></div></section>
+
+    <!-- NOTIFICATIONS -->
+    <section id="notifications" class="section"><div class="section-head"><div><span class="eyebrow-pill">ATTENTION CENTER</span><h2>Alerts & notifications</h2><p>Operational conditions that may need attention.</p></div><button class="secondary" onclick="refreshAll()">↻ Recheck</button></div><div id="alertList" class="alert-list"></div></section>
+
+    <!-- SETTINGS -->
+    <section id="settings" class="section"><div class="section-head"><div><span class="eyebrow-pill">WORKSPACE</span><h2>Settings</h2><p>Simple local preferences for the operations dashboard.</p></div></div><div class="settings-grid"><div class="panel setting-card"><div class="setting-icon">◐</div><h3>Display</h3><p>Use the field dashboard in a clean light layout.</p><label class="toggle-row"><span>Compact tables</span><input type="checkbox" id="compactToggle" onchange="toggleCompact()"><i></i></label></div><div class="panel setting-card"><div class="setting-icon">●</div><h3>Connection</h3><p>Backend API is served from this Spring Boot application.</p><div class="connection large"><span class="status-dot"></span><span>Connected on current origin</span></div></div><div class="panel setting-card"><div class="setting-icon">▤</div><h3>Project information</h3><p><b>ReliefTrack</b><br>Disaster Relief Camp Resource Tracker<br>Spring Boot · MySQL · REST API</p></div></div></section>
+  </main>
+</div>
+
+<div class="modal" id="modal"><div class="modal-card"><button class="close" onclick="closeModal()">×</button><div id="modalContent"></div></div></div>
+
+<template id="campForm"><form onsubmit="saveCamp(event)"><div class="modal-title"><span class="eyebrow-pill">NEW CAMP</span><h2>Register relief camp</h2><p>Add the location and maximum shelter capacity.</p></div><div class="form-grid"><label>Camp name<input id="campName" required maxlength="120" placeholder="e.g. Pollachi Relief Camp"></label><label>Location<input id="campLocation" required maxlength="180" placeholder="e.g. Pollachi"></label><label class="full-span">Capacity<input id="campCapacity" type="number" min="1" required placeholder="100"></label></div><button class="primary full" type="submit">Register camp</button></form></template>
+<template id="supplyForm"><form onsubmit="saveSupply(event)"><div class="modal-title"><span class="eyebrow-pill">INCOMING SUPPLY</span><h2>Add inventory</h2><p>Record stock received at a relief camp.</p></div><div class="form-grid"><label>Camp<select id="supplyCamp" required></select></label><label>Supply type<select id="supplyType" required><option value="">Select type</option><option>FOOD</option><option>WATER</option><option>BLANKETS</option><option>MEDICAL_KITS</option><option>HYGIENE_KITS</option><option>OTHER</option></select></label><label>Quantity<input id="supplyQty" type="number" min="0" required placeholder="500"></label><label>Unit<input id="supplyUnit" placeholder="kg / litres / pieces" required maxlength="30"></label></div><button class="primary full" type="submit">Save inventory</button></form></template>
+<template id="familyForm"><form onsubmit="saveFamily(event)"><div class="modal-title"><span class="eyebrow-pill">NEW HOUSEHOLD</span><h2>Register family</h2><p>Create a household record before camp check-in.</p></div><div class="form-grid"><label>Family head name<input id="familyHead" required maxlength="120" placeholder="Full name"></label><label>Number of members<input id="familyMembers" type="number" min="1" required placeholder="4"></label><label class="full-span">Contact number<input id="familyContact" required maxlength="20" placeholder="9876543210"></label></div><button class="primary full" type="submit">Register family</button></form></template>
+<template id="checkInForm"><form onsubmit="saveCheckIn(event)"><div class="modal-title"><span class="eyebrow-pill">CAMP CHECK-IN</span><h2>Assign family to camp</h2><p>Capacity is checked automatically before confirmation.</p></div><input id="checkInFamilyId" type="hidden"><label>Camp<select id="checkInCamp" required></select></label><button class="primary full" type="submit">Confirm check-in</button></form></template>
+<template id="distributionForm"><form onsubmit="saveDistribution(event)"><div class="modal-title"><span class="eyebrow-pill">SUPPLY HANDOVER</span><h2>Record distribution</h2><p>Only checked-in families and available stock can receive supplies.</p></div><label>Camp<select id="distCamp" required onchange="refreshDistributionOptions()"></select></label><label>Checked-in family<select id="distFamily" required></select></label><label>Supply<select id="distSupply" required></select></label><label>Quantity<input id="distQty" type="number" min="1" required placeholder="10"></label><button class="primary full" type="submit">Confirm distribution</button></form></template>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

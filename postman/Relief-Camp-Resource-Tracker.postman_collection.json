@@ -1,0 +1,24 @@
+{
+  "info": {"name":"Relief Camp Resource Tracker","schema":"https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},
+  "variable":[{"key":"baseUrl","value":"http://localhost:8080"}],
+  "item":[
+    {"name":"Dashboard","request":{"method":"GET","url":"{{baseUrl}}/api/dashboard"}},
+    {"name":"Camps","item":[
+      {"name":"Create Camp","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"name\": \"Pollachi Relief Camp\",\n  \"location\": \"Municipal Community Hall\",\n  \"capacity\": 100\n}"},"url":"{{baseUrl}}/api/camps"}},
+      {"name":"List Camps","request":{"method":"GET","url":"{{baseUrl}}/api/camps?page=0&size=10&sort=name&direction=asc"}}
+    ]},
+    {"name":"Supplies","item":[
+      {"name":"Log Water","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"campId\": 1,\n  \"type\": \"WATER\",\n  \"quantity\": 500,\n  \"unit\": \"litres\"\n}"},"url":"{{baseUrl}}/api/supplies"}},
+      {"name":"List Camp Inventory","request":{"method":"GET","url":"{{baseUrl}}/api/supplies?campId=1"}}
+    ]},
+    {"name":"Families","item":[
+      {"name":"Register Family","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"headName\": \"Ravi Kumar\",\n  \"memberCount\": 4,\n  \"contactNumber\": \"9876543210\"\n}"},"url":"{{baseUrl}}/api/families"}},
+      {"name":"Check In","request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"campId\":1}"},"url":"{{baseUrl}}/api/families/1/check-in"}},
+      {"name":"Check Out","request":{"method":"PUT","url":"{{baseUrl}}/api/families/1/check-out"}}
+    ]},
+    {"name":"Distribution","item":[
+      {"name":"Create Distribution","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"campId\": 1,\n  \"familyId\": 1,\n  \"supplyId\": 1,\n  \"quantity\": 20\n}"},"url":"{{baseUrl}}/api/distributions"}},
+      {"name":"List Distributions","request":{"method":"GET","url":"{{baseUrl}}/api/distributions"}}
+    ]}
+  ]
+}
